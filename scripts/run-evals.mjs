@@ -31,27 +31,39 @@ export async function runEvaluations({
   let passed = 0;
   let failed = 0;
 
-  for (const directory of evaluationDirectories) {
-    try {
-      const result = await evaluateFiles({
-        casesPath: join(evalsDirectory, directory.name, "cases.yml"),
-        skillPath: join(skillsDirectory, directory.name, "SKILL.md"),
-      });
-
-      for (const evaluationCase of result.cases) {
-        if (evaluationCase.passed) {
-          stdout(`✓ ${result.skill}: ${evaluationCase.name}`);
-          passed += 1;
-        } else {
-          stderr(
-            `✗ ${result.skill}: ${evaluationCase.name} (expected ${evaluationCase.expected}, got ${evaluationCase.actual})`,
-          );
-          failed += 1;
-        }
+  const evaluationResults = await Promise.all(
+    evaluationDirectories.map(async (directory) => {
+      try {
+        const result = await evaluateFiles({
+          casesPath: join(evalsDirectory, directory.name, "cases.yml"),
+          skillPath: join(skillsDirectory, directory.name, "SKILL.md"),
+        });
+        return { result };
+      } catch (error) {
+        return { directoryName: directory.name, error };
       }
-    } catch (error) {
-      stderr(`✗ ${directory.name}: ${error.message}`);
+    }),
+  );
+
+  for (const evaluation of evaluationResults) {
+    if (evaluation.error) {
+      stderr(`✗ ${evaluation.directoryName}: ${evaluation.error.message}`);
       failed += 1;
+      continue;
+    }
+
+    const { result } = evaluation;
+
+    for (const evaluationCase of result.cases) {
+      if (evaluationCase.passed) {
+        stdout(`✓ ${result.skill}: ${evaluationCase.name}`);
+        passed += 1;
+      } else {
+        stderr(
+          `✗ ${result.skill}: ${evaluationCase.name} (expected ${evaluationCase.expected}, got ${evaluationCase.actual})`,
+        );
+        failed += 1;
+      }
     }
   }
 

@@ -70,7 +70,8 @@ cases:
 Every case requires a unique descriptive `name`, a non-empty `prompt`, and an
 `expected` value of either `use` or `do-not-use`. The command returns status `0`
 when all cases pass and status `1` for a failed case, invalid suite, or missing
-file.
+file. Suites are evaluated concurrently, while their results remain ordered by
+skill directory name for stable local and CI output.
 
 ## Skill format
 
