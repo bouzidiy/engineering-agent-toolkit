@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "evals": "node scripts/run-evals.mjs",
     "validate-skills": "node scripts/validate-skills.mjs",
     "test": "node --test"
   },

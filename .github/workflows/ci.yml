@@ -30,3 +30,6 @@ jobs:
 
       - name: Validate skills
         run: npm run validate-skills
+
+      - name: Run evaluations
+        run: npm run evals

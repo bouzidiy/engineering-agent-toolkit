@@ -1,6 +1,16 @@
 ---
 name: diagnose-bug
 description: Diagnose runtime failures, exceptions, failing tests, regressions, performance problems, and unexpected software behavior by gathering evidence and identifying the root cause before changing code.
+triggers:
+  - diagnose
+  - root cause
+  - error
+  - exception
+  - failing test
+  - regression
+  - performance problem
+  - unexpected behavior
+  - http 5
 ---
 
 

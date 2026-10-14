@@ -41,6 +41,37 @@ script. Relative paths are resolved from the directory where the command is run.
 The validation command exits with status `0` when every skill is valid and status
 `1` when a validation error occurs.
 
+## Evaluations
+
+Run all behavioral selection evaluations:
+
+```bash
+npm run evals
+```
+
+Each skill under evaluation declares a non-empty `triggers` list in its YAML
+frontmatter. The deterministic selector activates a skill when the prompt contains
+its name or one of its triggers, using case-insensitive matching.
+
+Evaluation suites live at `evals/<skill-name>/cases.yml`:
+
+```yaml
+skill: diagnose-bug
+cases:
+  - name: runtime error
+    prompt: Diagnose this runtime error.
+    expected: use
+
+  - name: unrelated question
+    prompt: Explain the difference between HashMap and ConcurrentHashMap.
+    expected: do-not-use
+```
+
+Every case requires a unique descriptive `name`, a non-empty `prompt`, and an
+`expected` value of either `use` or `do-not-use`. The command returns status `0`
+when all cases pass and status `1` for a failed case, invalid suite, or missing
+file.
+
 ## Skill format
 
 Each skill lives in its own directory and must contain a `SKILL.md` file. The
@@ -86,5 +117,5 @@ evals/     Evaluation cases for skills
 
 ## Continuous integration
 
-GitHub Actions installs dependencies with `npm ci`, runs all tests, and validates
-the checked-in skills for every push and pull request.
+GitHub Actions installs dependencies with `npm ci`, runs all tests, validates the
+checked-in skills, and executes all evaluations for every push and pull request.
