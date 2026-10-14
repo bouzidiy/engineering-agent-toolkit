@@ -5,7 +5,7 @@ import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-import { runValidation } from "../../scripts/validate-skills.mjs";
+import { main, runValidation } from "../../scripts/validate-skills.mjs";
 import { REQUIRED_SECTIONS } from "../../src/validation/validate-skill.mjs";
 
 function validSkillContent(name) {
@@ -101,4 +101,72 @@ test("returns 1 when no skills exist", async (t) => {
 
   assert.equal(exitCode, 1);
   assert.deepEqual(errors, ["Validation failed: no skill directories found."]);
+});
+
+test("uses the project skills directory by default", async () => {
+  const output = [];
+  const errors = [];
+
+  const exitCode = await main({
+    args: [],
+    stdout: (message) => output.push(message),
+    stderr: (message) => errors.push(message),
+  });
+
+  assert.equal(exitCode, 0);
+  assert.deepEqual(errors, []);
+  assert.ok(output.includes("✓ diagnose-bug: valid"));
+});
+
+test("accepts a custom relative skills directory", async (t) => {
+  const workingDirectory = await mkdtemp(join(tmpdir(), "skills-cli-"));
+  t.after(() => rm(workingDirectory, { recursive: true, force: true }));
+
+  const skillsDirectory = join(workingDirectory, "custom-skills");
+  const skillDirectory = join(skillsDirectory, "test-skill");
+  await mkdir(skillDirectory, { recursive: true });
+  await writeFile(join(skillDirectory, "SKILL.md"), validSkillContent("test-skill"));
+
+  const exitCode = await main({
+    args: ["custom-skills"],
+    cwd: workingDirectory,
+    stdout: () => {},
+    stderr: () => {},
+  });
+
+  assert.equal(exitCode, 0);
+});
+
+test("accepts a custom absolute skills directory", async (t) => {
+  const skillsDirectory = await mkdtemp(join(tmpdir(), "skills-cli-"));
+  t.after(() => rm(skillsDirectory, { recursive: true, force: true }));
+
+  const skillDirectory = join(skillsDirectory, "test-skill");
+  await mkdir(skillDirectory);
+  await writeFile(join(skillDirectory, "SKILL.md"), validSkillContent("test-skill"));
+
+  const exitCode = await main({
+    args: [skillsDirectory],
+    stdout: () => {},
+    stderr: () => {},
+  });
+
+  assert.equal(exitCode, 0);
+});
+
+test("returns 1 when the custom directory does not exist", async (t) => {
+  const workingDirectory = await mkdtemp(join(tmpdir(), "skills-cli-"));
+  t.after(() => rm(workingDirectory, { recursive: true, force: true }));
+
+  const errors = [];
+  const exitCode = await main({
+    args: ["does-not-exist"],
+    cwd: workingDirectory,
+    stdout: () => {},
+    stderr: (message) => errors.push(message),
+  });
+
+  assert.equal(exitCode, 1);
+  assert.equal(errors.length, 1);
+  assert.match(errors[0], /Unable to read skills directory/);
 });

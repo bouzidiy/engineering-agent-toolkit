@@ -1,5 +1,5 @@
 import { readdir } from "node:fs/promises";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { validateSkillPath } from "../src/validation/validate-skill.mjs";
@@ -69,14 +69,27 @@ export async function runValidation({
   return 0;
 }
 
-async function main() {
+export function resolveSkillsDirectory(requestedDirectory, cwd = process.cwd()) {
   const currentFile = fileURLToPath(import.meta.url);
   const currentDir = dirname(currentFile);
 
-  if (process.argv[1] === currentFile) {
-    const skillsDirectory = join(currentDir, "../skills");
-    process.exitCode = await runValidation({ skillsDirectory });
-  }
+  return requestedDirectory
+    ? resolve(cwd, requestedDirectory)
+    : join(currentDir, "../skills");
 }
 
-await main();
+export async function main({
+  args = process.argv.slice(2),
+  cwd = process.cwd(),
+  stdout = console.log,
+  stderr = console.error,
+} = {}) {
+  const skillsDirectory = resolveSkillsDirectory(args[0], cwd);
+  return runValidation({ skillsDirectory, stdout, stderr });
+}
+
+const currentFile = fileURLToPath(import.meta.url);
+
+if (process.argv[1] === currentFile) {
+  process.exitCode = await main();
+}

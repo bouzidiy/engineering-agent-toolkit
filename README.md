@@ -27,6 +27,17 @@ Validate every skill under `skills/`:
 npm run validate-skills
 ```
 
+Validate skills from another directory by passing a relative or absolute path
+after `--`:
+
+```bash
+npm run validate-skills -- ./my-skills
+npm run validate-skills -- /absolute/path/to/skills
+```
+
+The `--` separator tells npm to forward the remaining argument to the validation
+script. Relative paths are resolved from the directory where the command is run.
+
 The validation command exits with status `0` when every skill is valid and status
 `1` when a validation error occurs.
 
