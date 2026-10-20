@@ -6,6 +6,10 @@ triggers:
   - prototype interactif
   - prototype fonctionnel
   - prototypage
+  - faire un prototype
+  - créer un prototype
+  - générer un prototype
+  - generate a prototype
   - maquette interactive
   - données bouchonnées
   - mock data
