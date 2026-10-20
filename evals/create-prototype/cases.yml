@@ -1,0 +1,39 @@
+skill: create-prototype
+cases:
+  - name: explicit invocation
+    prompt: |
+      Use the create-prototype skill to turn this US into clickable screens.
+    expected: use
+
+  - name: functional prototype in French
+    prompt: |
+      À partir de cette user story, génère un prototype fonctionnel
+      avec des données fictives et des règles métier testables.
+    expected: use
+
+  - name: mocked scenarios
+    prompt: |
+      Je veux une maquette interactive avec des données bouchonnées
+      pour simuler les cas de validation et les erreurs.
+    expected: use
+
+  - name: English request
+    prompt: |
+      Create an interactive prototype of a customer approval flow,
+      with a scenario switcher and local mock data.
+    expected: use
+
+  - name: diagnosis rather than prototype
+    prompt: |
+      Diagnose the root cause of this Spring Boot 500 error.
+    expected: do-not-use
+
+  - name: static design discussion
+    prompt: |
+      Explain best practices for building accessible Angular forms.
+    expected: do-not-use
+
+  - name: production implementation
+    prompt: |
+      Implement a production API endpoint in Spring Boot using Postgres.
+    expected: do-not-use
