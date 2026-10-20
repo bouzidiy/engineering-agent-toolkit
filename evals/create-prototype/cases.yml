@@ -11,6 +11,11 @@ cases:
       avec des données fictives et des règles métier testables.
     expected: use
 
+  - name: natural request without the skill name
+    prompt: |
+      Peux-tu me faire un prototype depuis cette US pour tester les règles métier ?
+    expected: use
+
   - name: mocked scenarios
     prompt: |
       Je veux une maquette interactive avec des données bouchonnées
