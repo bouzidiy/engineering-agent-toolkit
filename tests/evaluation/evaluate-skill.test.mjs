@@ -76,6 +76,15 @@ test("selects a skill by explicit name or trigger", () => {
   assert.equal(shouldUseSkill(skill, "Explain a HashMap"), false);
 });
 
+test("short skill names match complete terms only", () => {
+  const skill = { name: "rea", triggers: ["reverse engineering"] };
+
+  assert.equal(shouldUseSkill(skill, "Use REA to inspect this application"), true);
+  assert.equal(shouldUseSkill(skill, "We need reverse engineering"), true);
+  assert.equal(shouldUseSkill(skill, "Create an Angular form"), false);
+  assert.equal(shouldUseSkill(skill, "Read the README"), false);
+});
+
 test("evaluates passing and failing cases", () => {
   const suite = parseEvaluationSuite(`
 skill: diagnose-bug

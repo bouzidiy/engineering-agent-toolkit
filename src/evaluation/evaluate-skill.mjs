@@ -80,7 +80,10 @@ export function shouldUseSkill(skill, prompt) {
   const normalizedPrompt = normalize(prompt);
   const explicitName = normalize(skill.name);
 
-  return normalizedPrompt.includes(explicitName)
+  // Match a skill name as a complete term: "rea" must not match "create".
+  const terms = normalizedPrompt.split(/[^\p{L}\p{N}-]+/u).filter(Boolean);
+
+  return terms.includes(explicitName)
     || skill.triggers.some((trigger) => normalizedPrompt.includes(normalize(trigger)));
 }
 

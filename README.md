@@ -41,6 +41,33 @@ script. Relative paths are resolved from the directory where the command is run.
 The validation command exits with status `0` when every skill is valid and status
 `1` when a validation error occurs.
 
+## REA integration
+
+The [REA skill](skills/rea/SKILL.md) guides authorized software investigations
+through [REA — Reverse Engineer Anything](https://rea.tools/).
+REA is an **external MCP integration**, not installed or shipped by this toolkit.
+Validating the skill does not establish that its MCP server is connected.
+
+Check the current upstream documentation before installing dependencies.
+REA requires Node.js 22.19+, 24.11+, or 26+ (stricter than this toolkit).
+On an approved machine, interactive client setup examples are:
+
+```bash
+npx rea-agents@latest setup --client claude_code
+# or: npx rea-agents@latest setup --client codex
+```
+
+Review any proposed agent configuration modifications before approving them,
+restart the client, and check the installation:
+
+```bash
+npx -y rea-agents@latest doctor --client claude_code --json
+# or: use --client codex
+```
+
+Native binary analysis may require a separately approved provider.
+See the [official getting-started guide](https://rea.tools/get-started/).
+
 ## Evaluations
 
 Run all behavioral selection evaluations:
@@ -51,7 +78,7 @@ npm run evals
 
 Each skill under evaluation declares a non-empty `triggers` list in its YAML
 frontmatter. The deterministic selector activates a skill when the prompt contains
-its name or one of its triggers, using case-insensitive matching.
+its name or one of its triggers, using case-insensitive matching. Skill names must match complete terms, so `rea` will not activate for `create`.
 
 Evaluation suites live at `evals/<skill-name>/cases.yml`:
 
