@@ -1,0 +1,25 @@
+skill: rea
+cases:
+  - name: explicit invocation
+    prompt: Use REA to inspect the Electron application I own.
+    expected: use
+
+  - name: reverse engineering
+    prompt: Reverse engineer this JavaScript bundle to understand the search feature.
+    expected: use
+
+  - name: native binary inspection
+    prompt: Inspect native binary behavior for this authorized application.
+    expected: use
+
+  - name: routine bug diagnosis
+    prompt: Diagnose an HTTP 500 in my Spring Boot app.
+    expected: do-not-use
+
+  - name: ordinary feature request
+    prompt: Create an Angular form component.
+    expected: do-not-use
+
+  - name: ordinary documentation
+    prompt: Read the README file and summarize it.
+    expected: do-not-use
