@@ -9,6 +9,37 @@ A small toolkit for building and validating reusable engineering-agent skills.
 
 ## Installation
 
+### Install in Codex from GitHub
+
+Add this repository as a Codex plugin marketplace:
+
+```bash
+codex plugin marketplace add bouzidiy/engineering-agent-toolkit
+codex plugin add engineering-agent-toolkit@engineering-agent-toolkit
+```
+
+Restart Codex after installation so the bundled skills are loaded. The plugin
+also appears as **Engineering Agent Toolkit** in the Plugins Directory of the
+ChatGPT desktop app.
+
+To get future versions published to the repository:
+
+```bash
+codex plugin marketplace upgrade engineering-agent-toolkit
+```
+
+For local development, register the current checkout instead:
+
+```bash
+codex plugin marketplace add /absolute/path/to/engineering-agent-toolkit
+```
+
+The plugin manifest is [`plugin.json`](plugin.json), and the Git-backed
+marketplace catalog is [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json).
+Codex automatically discovers every skill under `skills/` after installation.
+
+### Install development dependencies
+
 ```bash
 npm ci
 ```

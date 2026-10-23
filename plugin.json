@@ -1,0 +1,38 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "engineering-agent-toolkit",
+  "version": "1.0.0",
+  "description": "Reusable engineering workflows for Codex, including evidence-based bug diagnosis.",
+  "author": {
+    "name": "Yassine Bouzidi",
+    "url": "https://github.com/bouzidiy"
+  },
+  "homepage": "https://github.com/bouzidiy/engineering-agent-toolkit",
+  "repository": "https://github.com/bouzidiy/engineering-agent-toolkit",
+  "license": "ISC",
+  "keywords": [
+    "codex",
+    "engineering",
+    "debugging",
+    "agent-skills"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Engineering Agent Toolkit",
+        "shortDescription": "Engineering workflows for Codex",
+        "longDescription": "Reusable, tested engineering skills for Codex. The toolkit currently includes an evidence-based workflow for diagnosing bugs before proposing changes.",
+        "developerName": "Yassine Bouzidi",
+        "category": "Developer Tools",
+        "capabilities": [
+          "Read"
+        ],
+        "websiteURL": "https://github.com/bouzidiy/engineering-agent-toolkit",
+        "defaultPrompt": [
+          "Use Engineering Agent Toolkit to diagnose this bug.",
+          "Investigate this failing test and identify its root cause."
+        ]
+      }
+    }
+  }
+}
